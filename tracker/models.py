@@ -10,3 +10,6 @@ class Event(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     last_modified = models.DateTimeField(auto_now=True)
     confirmed_user = models.ManyToManyField(User)
+
+    def __str__(self):  # dunder str
+        return self.key + ": " + self.value
