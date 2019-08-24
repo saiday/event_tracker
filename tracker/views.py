@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from tracker.models import Event
 
@@ -58,3 +58,13 @@ class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
             return True
         return False
 
+
+class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Event
+    success_url = reverse_lazy('tracker-home')
+
+    def test_func(self):
+        event = self.get_object()
+        if event.confirmed_user.filter(id=self.request.user.id).exists():
+            return True
+        return False
