@@ -1,0 +1,15 @@
+{% extends "tracker/base.html" %}
+{% block content %}
+    <article class="media content-section">
+        <img class="rounded-circle article-img" src="{{ event.confirmed_user.first.profile.image.url }}">
+{#            Should put all confirmed users under column#}
+        <div class="media-body">
+            <div class="article-metadata">
+            <a class="mr-2" href="#">{{ object.key }}: {{ object.value }}</a>
+            <small class="text-muted">{{ object.created_at|date:"F j, Y"}}</small>
+            </div>
+
+            <p class="article-content"> {{ object.description }} </p>
+        </div>
+    </article>
+{% endblock %}
