@@ -22,6 +22,7 @@ class EventListView(ListView):
     template_name = 'tracker/home.html'
     context_object_name = 'events'
     ordering = ['-last_modified']
+    paginate_by = 10
 
 
 class EventDetailView(DetailView):
