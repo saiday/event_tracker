@@ -1,7 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render
-from django.urls import reverse, reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
 
 from tracker.models import Event
 
@@ -39,3 +39,22 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         instance.confirmed_user.add(self.request.user)
         instance.save()
         return super().form_valid(form)
+
+
+class EventUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Event
+    fields = ['key', 'value', 'description']
+
+    def form_valid(self, form):
+        form.save()
+        instance = form.instance
+        instance.confirmed_user.add(self.request.user)
+        instance.save()
+        return super().form_valid(form)
+
+    def test_func(self):
+        event = self.get_object()
+        if event.confirmed_user.filter(id=self.request.user.id).exists():
+            return True
+        return False
+
