@@ -27,6 +27,13 @@ class EventListView(ListView):
 class EventDetailView(DetailView):
     model = Event
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context['is_one_of_confirmed_user'] = self.get_object().confirmed_user.filter(id=self.request.user.id).exists()
+        return context
+
 
 class EventCreateView(LoginRequiredMixin, CreateView):
     model = Event

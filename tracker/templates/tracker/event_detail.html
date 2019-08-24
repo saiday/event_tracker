@@ -7,8 +7,13 @@
             <div class="article-metadata">
             <a class="mr-2" href="#">{{ object.key }}: {{ object.value }}</a>
             <small class="text-muted">{{ object.created_at|date:"F j, Y"}}</small>
+            {% if is_one_of_confirmed_user %}
+                <div>
+                <a class="btn btn-secondary btn-sm mt-1 mb-1" href="{% url 'event-update' object.id %}">Update</a>
+                <a class="btn btn-danger btn-sm mt-1 mb-1" href="{% url 'event-delete' object.id %}">Delete</a>
+                </div>
+            {% endif %}
             </div>
-
             <p class="article-content"> {{ object.description }} </p>
         </div>
     </article>
