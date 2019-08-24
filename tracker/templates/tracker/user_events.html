@@ -1,6 +1,6 @@
 {% extends "tracker/base.html" %}
 {% block content %}
-    <h1 class="mb-3">Total events: {{ page_obj.paginator.count }}</h1>
+    <h1 class="mb-3">Events by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
     {% for event in events %}
         <article class="media content-section">
             <a href="{% url 'user-events' event.confirmed_user.first.username %}"><img class="rounded-circle article-img" src="{{ event.confirmed_user.first.profile.image.url }}"></a>

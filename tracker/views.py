@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.shortcuts import render
+from django.contrib.auth.models import User
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
@@ -23,6 +24,21 @@ class EventListView(ListView):
     context_object_name = 'events'
     ordering = ['-last_modified']
     paginate_by = 10
+
+
+class UserEventListView(ListView):
+    """
+    default template should be at: tracker/event_list.html
+    """
+
+    model = Event
+    template_name = 'tracker/user_events.html'
+    context_object_name = 'events'
+    paginate_by = 10
+
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Event.objects.filter(confirmed_user=user).order_by('-last_modified')
 
 
 class EventDetailView(DetailView):

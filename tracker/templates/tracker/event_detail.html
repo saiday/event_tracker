@@ -1,7 +1,7 @@
 {% extends "tracker/base.html" %}
 {% block content %}
     <article class="media content-section">
-        <img class="rounded-circle article-img" src="{{ event.confirmed_user.first.profile.image.url }}">
+        <a href="{% url 'user-events' event.confirmed_user.first.username %}"><img class="rounded-circle article-img" src="{{ event.confirmed_user.first.profile.image.url }}"></a>
 {#            Should put all confirmed users under column#}
         <div class="media-body">
             <div class="article-metadata">
